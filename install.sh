@@ -14,5 +14,6 @@ ln -sf ~/batteries/.zshrc ~/.zshrc
 
 git config --global user.email "danny.meyer@gmail.com"
 git config --global user.name "Danny Meyer"
+rm -rf ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
