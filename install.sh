@@ -8,6 +8,9 @@ sed -i 's/ZSH_THEME=.*/ZSH_THEME="xxf"/' ~/.zshrc
 
 wget https://raw.githubusercontent.com/skaji/remote-pbcopy-iterm2/master/pbcopy
 chmod +x pbcopy
-mv pbcopy /usr/local/bin/
+sudo mv pbcopy /usr/local/bin/
 
 ln -sf ~/batteries/.zshrc ~/.zshrc
+
+git config --global user.email "danny.meyer@gmail.com"
+git config --global user.name "Danny Meyer"
