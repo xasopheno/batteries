@@ -97,6 +97,7 @@ alias talon-data='gcloud compute ssh --ssh-flag="-A" --project logo-classificati
 # Tmux
 alias tm='tmux new -s `basename $PWD | tr " " "_"`'
 alias v='nvim'
+alias vim='nvim'
 
 export PATH=$PATH:$HOME/bin
 export GOPATH=$HOME/go
@@ -116,4 +117,3 @@ export PATH=$VULKAN_SDK/bin:$PATH
 export DYLD_LIBRARY_PATH=$VULKAN_SDK/lib:$DYLD_LIBRARY_PATH
 export VK_ICD_FILENAMES=$VULKAN_SDK/etc/vulkan/icd.d/MoltenVK_icd.json
 export VK_LAYER_PATH=$VULKAN_SDK/etc/vulkan/explicit_layer.d
-

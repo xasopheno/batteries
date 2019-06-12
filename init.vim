@@ -4,32 +4,60 @@
 call plug#begin('~/.vim/plugged')
 
 " Make sure you use single quotes
+" Easy Comments
+
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'scrooloose/nerdcommenter'
+
+Plug 'justinmk/vim-sneak'
+
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 
-Plug 'prettier/prettier'
 Plug 'nikvdp/ejs-syntax'
 Plug 'jelera/vim-javascript-syntax'
 
 Plug 'tpope/vim-surround'
-Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-eunuch'
 
-Plug 'HerringtonDarkholme/yats.vim'
+
+Plug 'airblade/vim-gitgutter'
+Plug 'ap/vim-css-color'
+
 Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 Plug 'mhartington/nvim-typescript', {'for': ['typescript', 'tsx'], 'do': './install.sh' }
 " For async completion
 Plug 'Shougo/deoplete.nvim'
+
 " For Denite features
 Plug 'Shougo/denite.nvim'
 
 Plug 'christoomey/vim-tmux-navigator' 
+Plug 'timothycrosley/isort'
 
 " Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
 Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/seoul256.vim'
+Plug 'roryokane/detectindent'
+Plug 'terryma/vim-multiple-cursors'
+
+Plug 'jiangmiao/auto-pairs'
+"Plug 'zchee/deoplete-jedi'
+"Plug 'davidhalter/jedi-vim'
+"let g:jedi#completions_enabled = 0
+"let g:jedi#use_splits_not_buffers = "right"
 
 Plug 'rking/ag.vim'
 Plug 'w0rp/ale'
+let b:ale_linters = ['black', 'eslint', 'rustc']
+let b:ale_linters = {'rust': ['rls']}
+let b:ale_fixers = ['eslint', 'rustfmt', 'isort', 'black']
+let g:ale_completion_enabled = 1
+let g:ale_sign_error = "✗"
+let g:ale_sign_warning = "⚠"
+let g:ale_list_window_size = 3
+let b:ale_fix_on_save = 1
 
 " Any valid git URL is allowed
 Plug 'https://github.com/junegunn/vim-github-dashboard.git'
@@ -53,6 +81,7 @@ Plug 'nsf/gocode', { 'tag': 'v.20150303', 'rtp': 'vim' }
 
 " Plugin outside ~/.vim/plugged with post-update hook
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
 " Unmanaged plugin (manually installed and updated)
 Plug '~/my-prototype-plugin'
@@ -69,6 +98,9 @@ Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 "    \ }
 
 call plug#end()
+
+"shows when leader is set
+set showcmd|
 
 " if hidden is not set, TextEdit might fail.
 set hidden
@@ -163,7 +195,6 @@ command! -nargs=0 Format :call CocAction('format')
 " Use `:Fold` to fold current buffer
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
-
 " Add diagnostic info for https://github.com/itchyny/lightline.vim
 let g:lightline = {
       \ 'colorscheme': 'wombat',
@@ -202,8 +233,9 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
 
-map \ :NERDTreeToggle<CR>
+map ' :NERDTreeToggle<CR>
 map ; :FZF<CR>
+map <leader>c :nohl<CR>
 
 let g:seoul256_background = 233
 colo seoul256
@@ -213,5 +245,7 @@ let NERDTreeQuitOnOpen = 1
 let NERDTreeAutoDeleteBuffer = 1
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
-
-
+let g:airline_theme = 'violet'
+" Support virtualenv
+let g:pymode_virtualenv = 1
+:set termguicolors
