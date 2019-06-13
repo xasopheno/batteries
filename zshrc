@@ -98,9 +98,9 @@ alias talon-data='gcloud compute ssh --ssh-flag="-A" --project logo-classificati
 alias tm='tmux new -s `basename $PWD | tr " " "_"`'
 alias v='nvim'
 alias vim='nvim'
+alias gap='git add -p'
 alias python='python3'
 alias pip='pip3'
-alias gap='git add -p'
 
 export PATH=$PATH:$HOME/bin
 export GOPATH=$HOME/go

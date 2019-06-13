@@ -3,8 +3,14 @@
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.vim/plugged')
 
-" Make sure you use single quotes
-" Easy Comments
+Plug 'ncm2/ncm2'
+Plug 'ncm2/ncm2-bufword'
+Plug 'ncm2/ncm2-path'
+Plug 'roxma/nvim-yarp'
+" Fast python completion (use ncm2 if you want type info or snippet support)
+Plug 'HansPinckaers/ncm2-jedi'
+Plug 'majutsushi/tagbar'
+
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -21,20 +27,22 @@ Plug 'jelera/vim-javascript-syntax'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-eunuch'
 
-
 Plug 'airblade/vim-gitgutter'
 Plug 'ap/vim-css-color'
+Plug 'davidhalter/jedi-vim'
 
 Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 Plug 'mhartington/nvim-typescript', {'for': ['typescript', 'tsx'], 'do': './install.sh' }
 " For async completion
 Plug 'Shougo/deoplete.nvim'
+"Plug 'zchee/deoplete-jedi'
+Plug 'Vimjas/vim-python-pep8-indent'
 
 " For Denite features
 Plug 'Shougo/denite.nvim'
 
 Plug 'christoomey/vim-tmux-navigator' 
-Plug 'timothycrosley/isort'
+Plug 'tweekmonster/impsort.vim'
 
 " Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
 Plug 'junegunn/vim-easy-align'
@@ -43,14 +51,12 @@ Plug 'roryokane/detectindent'
 Plug 'terryma/vim-multiple-cursors'
 
 Plug 'jiangmiao/auto-pairs'
-"Plug 'zchee/deoplete-jedi'
-"Plug 'davidhalter/jedi-vim'
 "let g:jedi#completions_enabled = 0
 "let g:jedi#use_splits_not_buffers = "right"
 
 Plug 'rking/ag.vim'
 Plug 'w0rp/ale'
-let b:ale_linters = ['black', 'eslint', 'rustc']
+let b:ale_linters = ['black', 'eslint', 'rustc', 'flake8', 'autopep8']
 let b:ale_linters = {'rust': ['rls']}
 let b:ale_fixers = ['eslint', 'rustfmt', 'isort', 'black']
 let g:ale_completion_enabled = 1
@@ -249,3 +255,12 @@ let g:airline_theme = 'violet'
 " Support virtualenv
 let g:pymode_virtualenv = 1
 :set termguicolors
+
+" Disable Jedi-vim autocompletion and enable call-signatures options
+let g:jedi#auto_initialization = 1
+let g:jedi#completions_enabled = 0
+let g:jedi#auto_vim_configuration = 0
+let g:jedi#smart_auto_mappings = 0
+let g:jedi#popup_on_dot = 0
+let g:jedi#completions_command = ""
+let g:jedi#show_call_signatures = "1"
