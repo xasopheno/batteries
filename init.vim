@@ -59,14 +59,13 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'rking/ag.vim'
 Plug 'w0rp/ale'
-let b:ale_linters = ['black', 'eslint', 'rustc', 'flake8', 'autopep8']
-let b:ale_linters = {
+let b:ale_linters = {'sh': ['shfmt'],
 	\ 'rust': ['rls'],
  	\ 'javascript': ['prettier'],
 	\ 'css': ['prettier'],
 	\ 'python': ['isort', 'autopep8']}
 
-let g:ale_fixers = {
+let g:ale_fixers = {'sh': ['shfmt'],
 \   'javascript': ['prettier'],
 \   'css': ['prettier'],
 \   'rust': ['rls'],
