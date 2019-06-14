@@ -96,9 +96,14 @@ alias talon-data='gcloud compute ssh --ssh-flag="-A" --project logo-classificati
 
 # Tmux
 alias tm='tmux new -s `basename $PWD | tr " " "_"`'
+# Vim
 alias v='nvim'
 alias vim='nvim'
+# Git
+alias gs='git status'
 alias gap='git add -p'
+alias gca='git commit --amend'
+# Python
 alias python='python3'
 alias pip='pip3'
 

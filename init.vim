@@ -27,6 +27,8 @@ Plug 'jelera/vim-javascript-syntax'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-eunuch'
 
+Plug 'HerringtonDarkholme/yats.vim'
+
 Plug 'airblade/vim-gitgutter'
 Plug 'ap/vim-css-color'
 Plug 'davidhalter/jedi-vim'
@@ -53,13 +55,24 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'jiangmiao/auto-pairs'
 "let g:jedi#completions_enabled = 0
 "let g:jedi#use_splits_not_buffers = "right"
-
+",
+Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'rking/ag.vim'
 Plug 'w0rp/ale'
 let b:ale_linters = ['black', 'eslint', 'rustc', 'flake8', 'autopep8']
-let b:ale_linters = {'rust': ['rls']}
-let b:ale_fixers = ['eslint', 'rustfmt', 'isort', 'black']
+let b:ale_linters = {
+	\ 'rust': ['rls'],
+ 	\ 'javascript': ['prettier'],
+	\ 'css': ['prettier'],
+	\ 'python': ['isort', 'autopep8']}
+
+let g:ale_fixers = {
+\   'javascript': ['prettier'],
+\   'css': ['prettier'],
+\   'rust': ['rls'],
+\   'python': ['isort', 'autopep8']}
 let g:ale_completion_enabled = 1
+let g:ale_linters_explicit = 1
 let g:ale_sign_error = "✗"
 let g:ale_sign_warning = "⚠"
 let g:ale_list_window_size = 3
@@ -264,3 +277,7 @@ let g:jedi#smart_auto_mappings = 0
 let g:jedi#popup_on_dot = 0
 let g:jedi#completions_command = ""
 let g:jedi#show_call_signatures = "1"
+
+" turn hybrid line numbers on
+:set number relativenumber
+:set nu rnu
