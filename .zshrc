@@ -113,11 +113,11 @@ alias xargsi='xargs -I {}'
 alias -g .alert='; osascript -e '"'"'display notification "Finished"'"'"'; say finished'
 
 # Python
-alias python='python3'
-alias pip='pip3'
 alias tma='tmux attach-session -t' 
 alias ls='exa -a'
 alias chmox='chmod +x'
+alias cat='bat'
+alias shuf='gshuf'
 
 export PATH=$PATH:$HOME/bin
 export GOPATH=$HOME/go

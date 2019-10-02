@@ -26,6 +26,7 @@ Plug '/Users/danny/Documents/dev/WereSoCool/weresocool_vim'
 "
 "
 Plug 'sbdchd/neoformat'
+Plug 'z0mbix/vim-shfmt', { 'for': 'sh' }
 
 " Format on save, if desired
 "augroup fmt
@@ -144,6 +145,7 @@ autocmd FileType json syntax match Comment +\/\/.\+$+                          "
 
 
 Plug 'terryma/vim-multiple-cursors'
+
 
 "Plug 'ncm2/ncm2'
 "Plug 'ncm2/ncm2-bufword'
@@ -344,7 +346,7 @@ set shiftwidth=4
 set smarttab
 set autoindent
 set smartindent
-
+set nowrap
 
 " Quicker window movement
 nnoremap <C-j> <C-w>j
@@ -376,13 +378,13 @@ if (has("termguicolors"))
 endif
 
 " Disable Jedi-vim autocompletion and enable call-signatures options
-let g:jedi#auto_initialization = 1
-let g:jedi#completions_enabled = 0
-let g:jedi#auto_vim_configuration = 0
-let g:jedi#smart_auto_mappings = 0
-let g:jedi#popup_on_dot = 0
-let g:jedi#completions_command = ""
-let g:jedi#show_call_signatures = "1"
+"let g:jedi#auto_initialization = 1
+"let g:jedi#completions_enabled = 0
+"let g:jedi#auto_vim_configuration = 0
+"let g:jedi#smart_auto_mappings = 0
+"let g:jedi#popup_on_dot = 0
+"let g:jedi#completions_command = ""
+"let g:jedi#show_call_signatures = "1"
 
 " turn hybrid line numbers on
 :set number relativenumber
@@ -533,6 +535,65 @@ endtry
 
 " === Coc.nvim === "
 " use <tab> for trigger completion and navigate to next complete item
+let g:coc_global_extensions = [
+  \ 'coc-css',
+  \ 'coc-eslint',
+  \ 'coc-stylelintplus',
+  \ 'coc-highlight',
+  \ 'coc-git',
+  \ 'coc-html',
+  \ 'coc-json',
+  \ 'coc-lists',
+  \ 'coc-prettier',
+  \ 'coc-rls',
+  \ 'coc-tsserver',
+  \ 'coc-yaml',
+  \ 'coc-vimlsp',
+  \ 'coc-go',
+  \ 'coc-gitignore',
+  \ 'coc-python',
+  \ 'coc-yaml',
+  \ 'coc-sql',
+  \ 'coc-styled-components',
+  \ ]
+
+function! s:isPreviewWindowOpen()
+  for nr in range(1, winnr('$'))
+    if getwinvar(nr, "&pvw") == 1
+      return 1
+    endif
+  endfor
+  return 0
+endfunction
+
+" Close preview window without changing the sizes of other windows.
+function! s:closePreview()
+  if !s:isPreviewWindowOpen()
+    return
+  endif
+
+  let eq = &equalalways
+  set noequalalways
+  pclose
+  if eq
+    let cmd = winrestcmd()
+    let &equalalways = eq
+    exe cmd
+  endif
+endfunction
+
+nnoremap <silent> <C-W>z :call <SID>closePreview()<cr>
+
+command! -nargs=+ -complete=custom,s:GrepArgs Rg exe 'CocList -A grep '.<q-args>
+
+function! s:GrepArgs(...)
+  let list = ['-S', '-smartcase', '-i', '-ignorecase', '-w', '-word',
+        \ '-e', '-regex', '-u', '-skip-vcs-ignores', '-t', '-extension']
+  return join(list, "\n")
+endfunction
+
+" coc-settings.json uses jsonc, which adds comment syntax
+autocmd FileType json syntax match Comment +\/\/.\+$+"
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~ '\s'
