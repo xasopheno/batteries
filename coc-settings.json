@@ -1,0 +1,7 @@
+{
+    "coc.preferences.formatOnSaveFiletypes": ["javascript", "javascriptreact", "typescript", "typescriptreact", "json", "graphql", "css", "Markdown", "rust", "python"],
+"suggest.snippetIndicator": "►"
+}
+
+
+
