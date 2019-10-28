@@ -63,6 +63,14 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" use <tab> for trigger completion and navigate to the next complete item
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
 
 " use <tab> for trigger completion and navigate to the next complete item
 function! s:check_back_space() abort
@@ -74,7 +82,6 @@ inoremap <silent><expr> <Tab>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<Tab>" :
       \ coc#refresh()
-
 
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
@@ -105,69 +112,14 @@ command! -nargs=0 Format :call CocAction('format')                             "
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)                   " Use `:Fold` for fold current buffer
 autocmd FileType json syntax match Comment +\/\/.\+$+                          " COC JSON - better comment rendering
 
-"Plug 'autozimu/LanguageClient-neovim', {
-    "\ 'branch': 'next',
-    "\ 'do': 'bash install.sh',
-    "\ }
-"let g:LanguageClient_serverCommands = {
-    "\ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
-    "\ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
-    "\ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
-    "\ 'python': ['/usr/local/bin/pyls'],
-    "\ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
-    "\ }
-"Plug 'ludovicchabant/vim-gutentags'
-
-"let b:ale_linters = {'sh': ['shfmt'],
-            "\ 'rust': ['rls'],
-            "\ 'javascript': ['prettier'],
-            "\ 'css': ['prettier'],
-            "\ 'python': ['isort', 'autopep8']}
-
-"let g:ale_fixers = {'sh': ['shfmt'],
-            "\ 'rust': ['rustfmt'],
-            "\ 'javascript': ['prettier'],
-            "\ 'css': ['prettier'],
-            "\ 'python': ['isort', 'autopep8']}
-
-
-"let g:ale_rust_rls_toolchain = 'stable'
-"let g:ale_completion_enabled = 1
-"let g:ale_linters_explicit = 1
-"let g:ale_sign_error = "✗" 
-"let g:ale_sign_warning = "⚠"
-"let g:ale_list_window_size = 3
-"let g:ale_fix_on_save = 1
-"let g:ale_on_enter = 0
-"let g:ale_lint_on_save = 1
-"let g:ale_open_list = 1 let g:ale_set_balloons = 1
-"let g:ale_cursor_detail = 1
-
-
 Plug 'terryma/vim-multiple-cursors'
 
 
-"Plug 'ncm2/ncm2'
-"Plug 'ncm2/ncm2-bufword'
-"Plug 'ncm2/ncm2-path'
-" Fast python completion (use ncm2 if you want type info or snippet support)
-"Plug 'HansPinckaers/ncm2-jedi'
-"Plug 'ncm2/ncm2-pyclang'
-"Plug 'ncm2/ncm2-racer'
-"Plug 'Shougo/neco-vim' " ncm2-vim
-"Plug 'ncm2/ncm2-vim'
-"Plug 'ncm2/ncm2-tagprefix'
-"Plug 'ncm2/ncm2-path'
-"Plug 'ncm2/ncm2-github'
-"Plug 'ncm2/ncm2-bufword'
-"Plug 'ncm2/ncm2-ultisnips'
-"Plug 'ObserverOfTime/ncm2-jc2'
 Plug 'pseewald/vim-anyfold'
 Plug 'arecarn/vim-fold-cycle'
 Plug 'sjl/gundo.vim'
 
 " snippets
-Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
 " enable ncm2 for all buffers
@@ -178,8 +130,6 @@ set completeopt=noinsert,menuone,noselect
 
 Plug 'roxma/nvim-yarp'
 Plug 'majutsushi/tagbar'
-"Plug 'valloric/youcompleteme', { 'do': './install.py --rust-completion' }
-
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -201,14 +151,11 @@ Plug 'HerringtonDarkholme/yats.vim'
 
 Plug 'airblade/vim-gitgutter'
 Plug 'ap/vim-css-color'
-"Plug 'davidhalter/jedi-vim' 
-Plug 'roxma/vim-paste-easy'
+"Plug 'roxma/vim-paste-easy'
 
 Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
 Plug 'mhartington/nvim-typescript', {'for': ['typescript', 'tsx'], 'do': './install.sh' }
-" For async completion
 Plug 'Shougo/deoplete.nvim'
-""Plug 'zchee/deoplete-jedi'
 Plug 'Vimjas/vim-python-pep8-indent'
 
 " For Denite features
@@ -339,10 +286,10 @@ set shortmess+=c
 " always show signcolumns
 set signcolumn=yes
 
-set tabstop=8
-set softtabstop=0
+set tabstop=2
+set softtabstop=2
 set expandtab 
-set shiftwidth=4
+set shiftwidth=2
 set smarttab
 set autoindent
 set smartindent
@@ -356,7 +303,8 @@ nnoremap <C-l> <C-w>l
 
 map ' :NERDTreeToggle<CR>
 map ; :FZF<CR>
-map <leader>c :noh<CR>
+map <leader>h :noh<CR>
+map re :Rg<Space>
 
 
 nnoremap <silent> <Leader>v :NERDTreeFind<CR>
@@ -376,15 +324,6 @@ if (has("termguicolors"))
     endif
     set termguicolors
 endif
-
-" Disable Jedi-vim autocompletion and enable call-signatures options
-"let g:jedi#auto_initialization = 1
-"let g:jedi#completions_enabled = 0
-"let g:jedi#auto_vim_configuration = 0
-"let g:jedi#smart_auto_mappings = 0
-"let g:jedi#popup_on_dot = 0
-"let g:jedi#completions_command = ""
-"let g:jedi#show_call_signatures = "1"
 
 " turn hybrid line numbers on
 :set number relativenumber
@@ -421,13 +360,6 @@ endif
     set showmatch " show matching braces
     set mat=2 " how many tenths of a second to blink
 
-    " Tab control
-    set smarttab " tab respects 'tabstop', 'shiftwidth', and 'softtabstop'
-    set tabstop=4 " the visible width of tabs
-    set softtabstop=4 " edit as if the tabs are 4 characters wide
-    set shiftwidth=4 " number of spaces to use for indent and unindent
-    set shiftround " round indent to a multiple of 'shiftwidth'
-
     " code folding settings
     set encoding=utf8
     let g:airline_powerline_fonts = 1
@@ -448,7 +380,6 @@ colo seoul256
 "inoremap jk <Esc>
 "inoremap kj <Esc>
 
-" Save file with 'zxc'
 noremap zxc :w<CR>
 noremap qwe :wq<CR>
 noremap fff :set foldlevel=0<CR>
@@ -599,18 +530,9 @@ function! s:check_back_space() abort
   return !col || getline('.')[col - 1]  =~ '\s'
 endfunction
 
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-
 
 let g:NERDTreeShowHidden = 1
 
-" Remove bookmarks and help text from NERDTree
-"let g:NERDTreeMinimalUI = 1
-"let g:NERDTreeDirArrowExpandable = '⬏'
-"let g:NERDTreeDirArrowCollapsible = '⬎'
 let g:NERDTreeIgnore = ['^\.DS_Store$', '^tags$', '\.git$[[dir]]', '\.idea$[[dir]]', '\.sass-cache$']
 
 try

@@ -61,6 +61,12 @@ plugins=(
   git
   zsh-autosuggestions
   up
+  brew
+  osx
+  pip
+  docker
+  heroku
+  rsync
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -118,6 +124,7 @@ alias ls='exa -a'
 alias chmox='chmod +x'
 alias cat='bat'
 alias shuf='gshuf'
+alias pcopy='pwd | pbcopy'
 
 export PATH=$PATH:$HOME/bin
 export GOPATH=$HOME/go
@@ -156,4 +163,7 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
