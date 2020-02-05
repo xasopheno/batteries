@@ -42,20 +42,23 @@ nnoremap <leader>fm :Neoformat<CR>
 Plug 'rust-lang/rust.vim', {'do': 'cargo install racer -f; rustup component add rls rust-analysis rust-src'}
 Plug 'racer-rust/vim-racer'
 Plug 'mbbill/undotree'
-Plug 'jeetsukumaran/vim-buffergator'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'integralist/vim-mypy'
-
 " auto-close plugin
 Plug 'rstacruz/vim-closer'
+Plug 'machakann/vim-sandwich'
 
-Plug 'Shougo/denite.nvim'
+"Plug 'Shougo/denite.nvim'
 " Print function signatures in echo area
 Plug 'Shougo/echodoc.vim'
 
 " Icons
 Plug 'ryanoasis/vim-devicons'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+
+Plug 'jeetsukumaran/vim-buffergator'
+Plug 'wellle/targets.vim'
+
 
 
 " Remap keys for gotos
@@ -110,7 +113,6 @@ augroup mygroup
 augroup end
 command! -nargs=0 Format :call CocAction('format')                             " Use `:Format` for format current buffer
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)                   " Use `:Fold` for fold current buffer
-autocmd FileType json syntax match Comment +\/\/.\+$+                          " COC JSON - better comment rendering
 
 Plug 'terryma/vim-multiple-cursors'
 
@@ -135,6 +137,9 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 Plug 'scrooloose/nerdcommenter'
+let g:NERDCustomDelimiters={
+	\ 'javascript': { 'left': '//', 'right': '', 'leftAlt': '{/*', 'rightAlt': '*/}' },
+\}
 
 Plug 'justinmk/vim-sneak'
 
@@ -154,8 +159,8 @@ Plug 'ap/vim-css-color'
 "Plug 'roxma/vim-paste-easy'
 
 Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
-Plug 'mhartington/nvim-typescript', {'for': ['typescript', 'tsx'], 'do': './install.sh' }
-Plug 'Shougo/deoplete.nvim'
+"Plug 'mhartington/nvim-typescript', {'for': ['typescript', 'tsx'], 'do': './install.sh \| UpdateRemotePlugins' }
+"Plug 'Shougo/deoplete.nvim'
 Plug 'Vimjas/vim-python-pep8-indent'
 
 " For Denite features
@@ -377,8 +382,8 @@ colo seoul256
 
 " ESC shortcuts for insert mode
 "inoremap jj <Esc>
-"inoremap jk <Esc>
-"inoremap kj <Esc>
+inoremap jk <Esc>
+inoremap kj <Esc>
 
 noremap zxc :w<CR>
 noremap qwe :wq<CR>
