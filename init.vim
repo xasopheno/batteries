@@ -21,12 +21,15 @@ endif
 "call plug#begin('~/.nvim/plugged')
 call plug#begin('~/.config/nvim/plugged')
 
-Plug '/Users/danny/Documents/dev/WereSoCool/weresocool_vim'
-"Plug 'xasopheno/WereSoCool_vim'
+Plug '/Users/danny/dev/WereSoCool/weresocool_vim'
+" Plug 'xasopheno/WereSoCool_vim'
 "
 "
 Plug 'sbdchd/neoformat'
 Plug 'z0mbix/vim-shfmt', { 'for': 'sh' }
+Plug 'Yggdroot/indentLine'
+Plug 'tpope/vim-fugitive'
+Plug 'cespare/vim-toml'
 
 " Format on save, if desired
 "augroup fmt
@@ -36,26 +39,33 @@ Plug 'z0mbix/vim-shfmt', { 'for': 'sh' }
 
 " To Run Manually
 nnoremap <leader>fm :Neoformat<CR>
+autocmd Filetype gitcommit setlocal spell textwidth=72
+"
 "
 "Plug 'w0rp/ale'
 "Plug 'davidhalter/jedi-vim' "python autocompletion
 Plug 'rust-lang/rust.vim', {'do': 'cargo install racer -f; rustup component add rls rust-analysis rust-src'}
 Plug 'racer-rust/vim-racer'
+Plug 'qnighy/lalrpop.vim'
+
 Plug 'mbbill/undotree'
-Plug 'jeetsukumaran/vim-buffergator'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'integralist/vim-mypy'
-
 " auto-close plugin
 Plug 'rstacruz/vim-closer'
+" Plug 'machakann/vim-sandwich'
 
-Plug 'Shougo/denite.nvim'
+"Plug 'Shougo/denite.nvim'
 " Print function signatures in echo area
 Plug 'Shougo/echodoc.vim'
 
 " Icons
 Plug 'ryanoasis/vim-devicons'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+
+Plug 'jeetsukumaran/vim-buffergator'
+Plug 'wellle/targets.vim'
+
 
 
 " Remap keys for gotos
@@ -110,7 +120,6 @@ augroup mygroup
 augroup end
 command! -nargs=0 Format :call CocAction('format')                             " Use `:Format` for format current buffer
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)                   " Use `:Fold` for fold current buffer
-autocmd FileType json syntax match Comment +\/\/.\+$+                          " COC JSON - better comment rendering
 
 Plug 'terryma/vim-multiple-cursors'
 
@@ -135,7 +144,10 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 Plug 'scrooloose/nerdcommenter'
-
+let g:NERDCustomDelimiters={
+	\ 'javascript': { 'left': '// ', 'right': '', 'leftAlt': '{/* ', 'rightAlt': ' */}' },
+\}
+let NERDSpaceDelims=1
 Plug 'justinmk/vim-sneak'
 
 Plug 'pangloss/vim-javascript'
@@ -154,8 +166,8 @@ Plug 'ap/vim-css-color'
 "Plug 'roxma/vim-paste-easy'
 
 Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
-Plug 'mhartington/nvim-typescript', {'for': ['typescript', 'tsx'], 'do': './install.sh' }
-Plug 'Shougo/deoplete.nvim'
+"Plug 'mhartington/nvim-typescript', {'for': ['typescript', 'tsx'], 'do': './install.sh \| UpdateRemotePlugins' }
+"Plug 'Shougo/deoplete.nvim'
 Plug 'Vimjas/vim-python-pep8-indent'
 
 " For Denite features
@@ -174,6 +186,7 @@ Plug 'terryma/vim-multiple-cursors'
 "let g:jedi#use_splits_not_buffers = "right"
 ",
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
+let g:prettier#config#print_width = '70'
 Plug 'rking/ag.vim'
 
 " Any valid git URL is allowed
@@ -208,6 +221,8 @@ syntax on
 "autocmd Filetype * AnyFoldActivate
 
 set incsearch
+set hlsearch " highlight search results
+set cindent
 set textwidth=120
 
 set hidden
@@ -258,7 +273,6 @@ endif
 " Searching
 set ignorecase " case insensitive searching
 set smartcase " case-sensitive if expresson contains a capital letter
-set hlsearch " highlight search results
 set incsearch " set incremental search, like modern browsers
 set nolazyredraw " don't redraw while executing macros
 
@@ -329,14 +343,14 @@ endif
 :set number relativenumber
 :set nu rnu
 
-if executable('rls')
-    au User lsp_setup call lsp#register_server({
-        \ 'name': 'rls',
-        \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
-        \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
-        \ 'whitelist': ['rust'],
-        \ })
-endif
+"if executable('rls')
+    "au User lsp_setup call lsp#register_server({
+        "\ 'name': 'rls',
+        "\ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
+        "\ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
+        "\ 'whitelist': ['rust'],
+        "\ })
+"endif
 
 " Appearance {{{
     set number " show line numbers
@@ -377,8 +391,8 @@ colo seoul256
 
 " ESC shortcuts for insert mode
 "inoremap jj <Esc>
-"inoremap jk <Esc>
-"inoremap kj <Esc>
+inoremap jk <Esc>
+inoremap kj <Esc>
 
 noremap zxc :w<CR>
 noremap qwe :wq<CR>
@@ -476,7 +490,6 @@ let g:coc_global_extensions = [
   \ 'coc-json',
   \ 'coc-lists',
   \ 'coc-prettier',
-  \ 'coc-rls',
   \ 'coc-tsserver',
   \ 'coc-yaml',
   \ 'coc-vimlsp',
