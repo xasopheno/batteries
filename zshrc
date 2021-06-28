@@ -5,188 +5,77 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-
-# Path to your oh-my-zsh installation.
-export ZSH=/Users/danny/.oh-my-zsh
-# Set name of the theme to load. Optionally, if you set this to "random"
-# it'll load a random theme each time that oh-my-zsh is loaded.
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-#ZSH_THEME="robbyrussell"
+export ZSH="/home/danny/.oh-my-zsh"
+export EDITOR=nvim
 ZSH_THEME="powerlevel10k/powerlevel10k"
-# Set list of themes to load
-# Setting this variable when ZSH_THEME=random
-# cause zsh load theme from this variable instead of
-# looking in ~/.oh-my-zsh/themes/
-# An empty array have no effect
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
-  zsh-autosuggestions
-  up
-  brew
-  osx
+  cargo
   pip
   docker
   heroku
   rsync
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+  zsh-nvm
 )
 
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_DEFAULT_OPTS="--height 70% --info=inline --border --preview 'bat --style=numbers --color=always --line-range :500 {}'"
+export PATH=$HOME/.local/bin:$PATH
+export PATH=$HOME/go/bin:$PATH
+
+export PATH=/opt/anaconda/bin:$PATH
+export PATH=/home/danny/.gem/ruby/2.7.0/bin:$PATH
+source ~/.zplug/init.zsh
 source $ZSH/oh-my-zsh.sh
+source $HOME/.cargo/env
+source /opt/cuda/bin
+# HOROVOD_CUDA_HOME=/opt/cuda 
+# HOROVOD_NCCL_INCLUDE=/usr/include 
+# HOROVOD_NCCL_LIB=/usr/lib 
+# HOROVOD_GPU_ALLREDUCE=NCCL 
+# HOROVOD_WITH_PYTORCH=1 
 
-# User configuration
 
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-alias talon-data='gcloud compute ssh --ssh-flag="-A" --project logo-classification --zone us-central1-a data-formatter -- sudo -u talon -i'
-alias myip="ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'"
-
-# Tmux
-alias tm='tmux new -s `basename $PWD | tr " " "_"`'
-# Vim
+alias startx='ssh-agent startx'
+alias pac='sudo pacman --color auto'
 alias v='nvim'
+alias vi='nvim'
 alias vim='nvim'
-# Git
 alias gap='git add -p'
 alias gcm='git commit -m'
-alias gca='git commit --amend'
 alias gs='git status'
 alias gcv='git commit -v'
-alias -g .f='--force-with-lease'
-alias -g .l='|& less -FRX'
-alias xargsi='xargs -I {}'
-alias -g .alert='; osascript -e '"'"'display notification "Finished"'"'"'; say finished'
-alias glog="git log --graph --oneline --decorate --all"
-alias loc="scc ."
-
-# Python
-alias tma='tmux attach-session -t' 
-alias ls='exa -a'
+alias glog='git log --graph --oneline --decorate --all'
+alias tm='tmux new -s `basename $PWD | tr " " "_"`'
+alias tma='tmux attach-session -t'
+alias ls='ls --color=auto'
+alias ll='ls -lA'
 alias chmox='chmod +x'
-alias cat='bat'
-alias shuf='gshuf'
-alias pcopy='pwd | pbcopy'
 alias docker-murder='docker rm --force $(docker ps -qa)'
-
-
-export PATH=$PATH:$HOME/bin
-export PATH=node_modules/.bin:$PATH
-export AF_PATH=/opt/arrayfire
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$AF_PATH/lib
-export GOPATH=$HOME/go
-export PATH="/Users/danny/anaconda3/bin:$PATH"
-export PATH=$PATH:$GOPATH/bin
-export EDITOR='subl'
-plugins=(sublime)
-
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
-
-alias asdf="cd ~/Documents/dev"
-alias talon='gcloud compute ssh --ssh-flag="-A" --project logo-classification --zone us-central1-a training-gpu -- sudo -u talon -i'
-export RUSTC_WRAPPER=/Users/danny/.cargo/bin/sccache
-export VULKAN_SDK=$HOME/vulkan_sdk/macOS
-export PATH=$VULKAN_SDK/bin:$PATH
-export DYLD_LIBRARY_PATH=$VULKAN_SDK/lib:$DYLD_LIBRARY_PATH
-export VK_ICD_FILENAMES=$VULKAN_SDK/etc/vulkan/icd.d/MoltenVK_icd.json
-export VK_LAYER_PATH=$VULKAN_SDK/etc/vulkan/explicit_layer.d
-source /Users/danny/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source ~/enhancd/init.sh
-
+alias mirrors='sudo reflector -l 10 --sort rate --save /etc/pacman.d/mirrorlist'
+alias zshconfig='v ~/.zshrc'
+alias cl="clear"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/danny/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/opt/anaconda/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
-else /Users/danny/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-    if [ -f "/Users/danny/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/Users/danny/anaconda3/etc/profile.d/conda.sh"
+else
+    if [ -f "/opt/anaconda/etc/profile.d/conda.sh" ]; then
+        . "/opt/anaconda/etc/profile.d/conda.sh"
     else
-        export PATH="/Users/danny/anaconda3/bin:$PATH"
+        export PATH="/opt/anaconda/bin:$PATH"
     fi
 fi
 unset __conda_setup
 # <<< conda initialize <<<
-
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
+export SSL_CERT_FILE=/etc/ca-certificates/extracted/tls-ca-bundle.pem
 export TERMINFO=/usr/share/terminfo
-
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

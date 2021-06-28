@@ -1,7 +1,48 @@
 {
-    "coc.preferences.formatOnSaveFiletypes": ["javascript", "javascriptreact", "typescript", "typescriptreact", "json", "graphql", "css", "Markdown", "rust", "python"],
-"suggest.snippetIndicator": "►"
+  "languageserver": {
+    "clangd": {
+      "command": "clangd",
+      "rootPatterns": ["compile_flags.txt", "compile_commands.json"],
+      "filetypes": ["c", "cc", "cpp", "c++", "objc", "objcpp"]
+    },
+    "haskell": {
+      "command": "hie-wrapper",
+      "args": ["--lsp"],
+      "rootPatterns": [
+        "*.cabal",
+        "stack.yaml",
+        "cabal.project",
+        "package.yaml",
+        "hie.yaml"
+      ],
+      "filetypes": ["hs", "haskell", "lhaskell"]
+    }
+  },
+  "tsserver.enableJavascript": true,
+  "tsserver.npm": "/usr/bin/npm",
+  "python.jediEnabled": false,
+  "coc.preferences.formatOnSaveFiletypes": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "json",
+    "graphql",
+    "css",
+    "Markdown",
+    "rust"
+  ],
+  "diagnostic.errorSign": "✘",
+  "diagnostic.infoSign": "ℹ",
+  "diagnostic.hintSign": "➤",
+  "signature.enable": true,
+  "codeLens.enable": true,
+  "suggest.floatEnable": false,
+  "suggest.snippetIndicator": "►",
+  "python.pythonPath": "/opt/anaconda/bin/python",
+  "python.formatting.provider": "black",
+  "python.linting.pylintArgs": [
+    "--errors-only",
+    "--generated-members=numpy.*, torch.*, cv2.*, cv.*"
+  ]
 }
-
-
-

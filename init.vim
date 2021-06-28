@@ -20,16 +20,24 @@ endif
 "
 "call plug#begin('~/.nvim/plugged')
 call plug#begin('~/.config/nvim/plugged')
+Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile', 'for': ['js', 'ts', 'javascript', 'typescript', 'jsx', 'tsx', 'vue']}
+Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile', 'for': ['js', 'javascript', 'jsx', 'tsx']}
 
-Plug '/Users/danny/dev/WereSoCool/weresocool_vim'
+Plug '/home/danny/code/wsc_vim'
 " Plug 'xasopheno/WereSoCool_vim'
 "
 "
+Plug 'kana/vim-smartinput'
+Plug 'sheerun/vim-polyglot'
+Plug 'jparise/vim-graphql'
 Plug 'sbdchd/neoformat'
 Plug 'z0mbix/vim-shfmt', { 'for': 'sh' }
-Plug 'Yggdroot/indentLine'
 Plug 'tpope/vim-fugitive'
 Plug 'cespare/vim-toml'
+Plug 'tikhomirov/vim-glsl'
+Plug 'neovimhaskell/haskell-vim'
+Plug 'alx741/vim-hindent'
 
 " Format on save, if desired
 "augroup fmt
@@ -44,16 +52,16 @@ autocmd Filetype gitcommit setlocal spell textwidth=72
 "
 "Plug 'w0rp/ale'
 "Plug 'davidhalter/jedi-vim' "python autocompletion
-Plug 'rust-lang/rust.vim', {'do': 'cargo install racer -f; rustup component add rls rust-analysis rust-src'}
-Plug 'racer-rust/vim-racer'
+" Plug 'rust-lang/rust.vim', {'do': 'cargo install racer -f; rustup component add rls rust-analysis rust-src'}
+" Plug 'racer-rust/vim-racer'
 Plug 'qnighy/lalrpop.vim'
 
 Plug 'mbbill/undotree'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'integralist/vim-mypy'
+" Plug 'integralist/vim-mypy'
 " auto-close plugin
-Plug 'rstacruz/vim-closer'
-" Plug 'machakann/vim-sandwich'
+" Plug 'rstacruz/vim-closer'
+Plug 'machakann/vim-sandwich'
 
 "Plug 'Shougo/denite.nvim'
 " Print function signatures in echo area
@@ -68,11 +76,45 @@ Plug 'wellle/targets.vim'
 
 
 
+
 " Remap keys for gotos
+" h coc-nvim
+" code-action
+" show_documentationc
+" ~/.config/nvim/after/ftplugin/typescript.vim
+nmap <leader> cR <Plug>(coc-refactor)
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Remap for format selected region
+vmap <leader>f  <Plug>(coc-format-selected)
+
+" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+vmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap for do codeAction of current line
+nmap <leader>ac  <Plug>(coc-codeaction-line)
+nmap <leader>af  <Plug>(coc-codeaction)
+
+nmap <leader>al <Plug>(coc-codelens-action)
+nmap <leader>qf <plug>(coc-fix-current)
+nnoremap <leader>ef :CocCommand eslint.executeAutofix<cr>
+nmap <leader>ev <plug>(coc-diagnostic-info)
+
+
+" navigate chunks of current buffer
+nmap [g <Plug>(coc-git-prevchunk)
+nmap ]g <Plug>(coc-git-nextchunk)
+" show chunk diff at current position
+nmap gs <Plug>(coc-git-chunkinfo)
+" show commit ad current position
+nmap gC <Plug>(coc-git-commit)
+
 " Remap for rename current word
 nmap <leader>rn <Plug>(coc-rename)
 
@@ -88,19 +130,30 @@ function! s:check_back_space() abort
   return !col || getline('.')[col - 1]  =~ '\s'
 endfunction
 
-inoremap <silent><expr> <Tab>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<Tab>" :
-      \ coc#refresh()
+" inoremap <silent><expr> <Tab>
+      " \ pumvisible() ? "\<C-n>" :
+      " \ <SID>check_back_space() ? "\<Tab>" :
+      " \ coc#refresh()
 
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " COC
 set cmdheight=2                                 " Better display for messages
 set updatetime=300                              " Smaller updatetime for CursorHold & CursorHoldI
 set shortmess+=c                                " don't give |ins-completion-menu| messages.
 set signcolumn=yes                              " always show signcolumns
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
@@ -156,7 +209,7 @@ Plug 'mxw/vim-jsx'
 Plug 'nikvdp/ejs-syntax'
 Plug 'jelera/vim-javascript-syntax'
 
-Plug 'tpope/vim-surround'
+" Plug 'tpope/vim-surround'
 Plug 'tpope/vim-eunuch'
 
 Plug 'HerringtonDarkholme/yats.vim'
@@ -196,6 +249,7 @@ Plug 'https://github.com/junegunn/vim-github-dashboard.git'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
+nmap <Leader>r :NERDTreeFocus<cr>R<c-w><c-p>
 
 " Using a non-master branch
 "Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
@@ -204,8 +258,22 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'fatih/vim-go', { 'tag': '*' }
 
 " Plugin outside ~/.vim/plugged with post-update hook
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
 
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
@@ -318,7 +386,7 @@ nnoremap <C-l> <C-w>l
 map ' :NERDTreeToggle<CR>
 map ; :FZF<CR>
 map <leader>h :noh<CR>
-map re :Rg<Space>
+" map re :Rg<Space>
 
 
 nnoremap <silent> <Leader>v :NERDTreeFind<CR>
@@ -489,7 +557,6 @@ let g:coc_global_extensions = [
   \ 'coc-html',
   \ 'coc-json',
   \ 'coc-lists',
-  \ 'coc-prettier',
   \ 'coc-tsserver',
   \ 'coc-yaml',
   \ 'coc-vimlsp',
@@ -602,4 +669,48 @@ catch
 endtry
 
 
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+" function! s:check_back_space() abort
+  " let col = col('.') - 1
+  " return !col || getline('.')[col - 1]  =~# '\s'
+" endfunction
+" " Use <c-space> for trigger completion.
+" inoremap <silent><expr> <c-space> coc#refresh()
+" Pressing enter closes popupmenu if it is open, and inserts a line break.
+" Defer to vim-smartinput when the popupmenu is not visible.
+"
+" It seems that coc.nvim incorrectly puts the popupmenu into state 2 (as
+" described in the popupmenu-completion documentation) when it should be in
+" state 3. In state 2 <Enter> inserts the currently selected match instead of
+" inserting a line break.
+"
+" Do not automatically close single quotes in Rust when writing lifetime
+" variable declarations.
+"
+set conceallevel=0
+
+call smartinput#define_rule({
+\   'at': '<\s*\(''\s*[a-z]\s*,\s*\)*\%#',
+\   'char': '''',
+\   'input': '''',
+\   'filetype': ['rust'],
+\ })
+
+" Do not automatically close single quotes in Rust when writing reference types
+" with lifetime specifiers.
+call smartinput#define_rule({
+\   'at': '&\%#',
+\   'char': '''',
+\   'input': '''',
+\   'filetype': ['rust'],
+\ })
+
+call smartinput#map_to_trigger('i', '<Plug>SmartinputCR', '<Enter>', '<CR>')
+imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<Plug>SmartinputCR"
 map <Space> <Leader>
