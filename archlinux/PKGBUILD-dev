@@ -1,0 +1,34 @@
+pkgname=xasopheno-development-meta
+pkgver=0.0.1
+pkgrel=1
+arch=('any')
+url="http://www.github.com/xasopheno/batteries"
+depends=(
+
+cmake
+docker
+docker-compose
+entr
+gcc
+git
+make
+postgresql
+
+# Golang
+go
+go-tools
+gopls
+
+# Rust
+rustup
+
+# NodeJS
+nodejs
+npm
+yarn
+
+)
+
+package() {
+  true
+}

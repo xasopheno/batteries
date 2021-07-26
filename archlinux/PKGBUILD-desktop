@@ -1,0 +1,56 @@
+pkgname=xasopheno-desktop-meta
+pkgver=0.0.1
+pkgrel=1
+arch=('any')
+url="http://www.github.com/xasopheno/batteries"
+depends=(
+
+# DE Stuff (dependencies for sway, i3block scripts, etc)
+flameshot #screenshots
+i3blocks
+pavucontrol
+pulseaudio
+pulseaudio-alsa
+xorg-bdftopcf
+xorg-font-util
+xorg-mkfontscale
+xorg-xinit
+
+# Applications
+alacritty
+arandr
+bat
+feh
+htop
+hub
+i3-gaps
+i3status
+eog
+exa
+fd
+firefox
+mpv
+ranger
+ncmpcpp
+newsboat
+nerd-fonts-complete
+ngrok
+nvtop
+nvidia
+nvidia-container-toolkit
+nvm
+thunar
+yay
+
+# Fonts
+ttf-fira-mono
+ttf-fira-code
+ttf-iosevka
+zsh-autosuggestions
+zsh-syntax-highlighting 
+
+)
+
+package() {
+  true
+}

@@ -1,0 +1,106 @@
+#!/usr/bin/env bash
+
+set -e
+
+function section {
+  echo
+  echo
+  echo
+  echo "################################################################"
+  echo "==> $1"
+  echo
+}
+
+function ask {
+  printf "%s: " "$2"
+  read $1
+}
+
+function confirm {
+  QUESTION="$1"
+  CONTINUE="nil"
+  while [ "$CONTINUE" != "yes" ]; do
+    ask CONTINUE "$1 (yes/no)"
+    if [ "$CONTINUE" == "no" ]; then
+      exit 1
+    fi
+  done
+}
+
+section "GENERATING AND UPDATING MIRROR LIST"
+curl "https://archlinux.org/mirrorlist/?country=US&protocol=https&ip_version=4" | sed -E 's/^#//' > /etc/pacman.d/mirrorlist
+cat /etc/pacman.d/mirrorlist
+confirm "Does this mirror list look good"
+
+
+section "PARTITIONING DRIVES"
+fdisk -l
+ask DRIVE "Select a drive"
+{
+  echo g       # make gpt partition table
+
+  echo n       # Add new partition (/boot)
+  echo         # (default 1)
+  echo         # (default 2048)
+  echo "+512M"
+
+  echo n       # Add new partition (linux)
+  echo         # (default 2)
+  echo         # (default)
+  echo         # (default)
+
+  echo t       # Change partition type
+  echo 1       # Partition number 1 (/boot)
+  echo 1       # EFI System
+
+  echo w       # write
+} | fdisk "$DRIVE"
+fdisk -l
+confirm "Does drive partition look good"
+
+
+PARTITIONS=($(lsblk -pln -o name "$DRIVE"))
+
+
+section "FORMATTING & MOUNTING DRIVES"
+cryptsetup luksFormat --type luks "${PARTITIONS[2]}"
+cryptsetup luksOpen "${PARTITIONS[2]}" main
+mkfs.vfat -F32 "${PARTITIONS[1]}"
+mkfs.ext4 -F /dev/mapper/main
+mount /dev/mapper/main /mnt
+mkdir /mnt/boot
+mount "${PARTITIONS[1]}" /mnt/boot
+
+section "CREATING SWAPFILE"
+ask SWAPSIZE "Swapfile size in MB (e.g. 4000)"
+mkdir /mnt/var
+dd if=/dev/zero of=/mnt/var/swap count="$SWAPSIZE" bs=1MiB
+chmod 600 /mnt/var/swap
+mkswap /mnt/var/swap
+
+section "INSTALLING BASE"
+pacstrap /mnt base linux linux-firmware
+genfstab -U /mnt >> /mnt/etc/fstab
+echo "/var/swap none swap defaults 0 0" >> /mnt/etc/fstab
+
+section "KICKING OFF CHROOT SCRIPT"
+mv chroot /mnt/chroot
+arch-chroot /mnt bash /chroot
+rm /mnt/chroot
+
+section "CREATING EFISTUB BOOT ENTRY"
+ask EFILABEL "EFI label"
+PARTUUID=$(lsblk -dno PARTUUID ${PARTITIONS[2]})
+efibootmgr \
+  --disk "$DRIVE" \
+  --create \
+  --label "$EFILABEL" \
+  --loader /vmlinuz-linux \
+  --unicode "cryptdevice=PARTUUID=$PARTUUID:root root=/dev/mapper/root rw initrd=\\intel-ucode.img initrd=\\initramfs-linux.img" \
+  --verbose \
+  ;
+
+section "CLEANING UP"
+umount /mnt/boot
+umount /mnt
+cryptsetup close main

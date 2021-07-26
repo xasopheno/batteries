@@ -1,0 +1,45 @@
+pkgname=xasopheno-shared-meta
+pkgver=0.0.1
+pkgrel=1
+arch=('any')
+url="http://www.github.com/xasopheno/batteries"
+depends=(
+
+atool
+bind # dig
+binutils # required for makepkg
+bubblewrap
+fzf
+htop
+iputils
+jq
+lsof
+neovim
+networkmanager
+openbsd-netcat
+openssh
+pkgfile
+rsync
+sshfs
+sudo
+the_silver_searcher
+time
+vifm
+which
+whois
+words # /usr/share/dict/words
+
+# Packages to keep `pacman -Qt` clean
+base
+binutils
+fakeroot
+linux
+linux-firmware
+man-db
+man-pages
+zsh
+)
+
+package() {
+  true
+}

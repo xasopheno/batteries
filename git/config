@@ -1,6 +1,6 @@
-[user]
-	email = danny@xasopheno.com
-	name = xasopheno
+[core]
+  excludesfile = ~/.config/git/gitignore_global
+  editor = nvim
 [pull]
 	rebase = false
 

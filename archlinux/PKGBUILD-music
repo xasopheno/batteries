@@ -1,0 +1,16 @@
+pkgname=xasopheno-music-meta
+pkgver=0.0.1
+pkgrel=1
+arch=('any')
+url="http://www.github.com/xasopheno/batteries"
+depends=(
+
+mpc
+mpd
+ncmpcpp
+
+)
+
+package() {
+  true
+}
