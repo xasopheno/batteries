@@ -1,4 +1,5 @@
 " check whether vim-plug is installed and install it if necessary
+
 let plugpath = expand('<sfile>:p:h'). '/autoload/plug.vim'
 if !filereadable(plugpath)
     if executable('curl')
@@ -20,24 +21,37 @@ endif
 "
 "call plug#begin('~/.nvim/plugged')
 call plug#begin('~/.config/nvim/plugged')
-Plug 'neoclide/coc-tsserver', {'do': 'yarn install --frozen-lockfile', 'for': ['js', 'ts', 'javascript', 'typescript', 'jsx', 'tsx', 'vue']}
-Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile', 'for': ['js', 'javascript', 'jsx', 'tsx']}
+" Plug 'neoclide/coc-prettier', {'do': 'yarn install --frozen-lockfile'}
+" Plug 'neoclide/coc-eslint', {'do': 'yarn install --frozen-lockfile', 'for': ['js', 'javascript', 'jsx', 'tsx']}
 
 Plug '/home/danny/code/wsc_vim'
 " Plug 'xasopheno/WereSoCool_vim'
 "
 "
+" Plug 'ludovicchabant/vim-gutentags'
+" Plug 'itchyny/lightline.vim'
+" let g:lightline = {
+      " \ 'colorscheme': 'one',
+      " \ 'background': 'dark'
+      " \ }
+" Plug 'brooth/far.vim'
+Plug 'NoahTheDuke/vim-just'
+" Plug 'tyru/eskk.vim'
+Plug 'dingdean/wgsl.vim'
+Plug 'chrisbra/csv.vim'
 Plug 'kana/vim-smartinput'
 Plug 'sheerun/vim-polyglot'
 Plug 'jparise/vim-graphql'
-Plug 'sbdchd/neoformat'
 Plug 'z0mbix/vim-shfmt', { 'for': 'sh' }
 Plug 'tpope/vim-fugitive'
+Plug 'alexdavid/vim-min-git-status'
 Plug 'cespare/vim-toml'
 Plug 'tikhomirov/vim-glsl'
 Plug 'neovimhaskell/haskell-vim'
-Plug 'alx741/vim-hindent'
+Plug 'hashivim/vim-terraform'
+let g:terraform_fmt_on_save=1
+let g:terraform_align=1
+Plug 'nathanaelkane/vim-indent-guides'
 
 " Format on save, if desired
 "augroup fmt
@@ -50,29 +64,28 @@ nnoremap <leader>fm :Neoformat<CR>
 autocmd Filetype gitcommit setlocal spell textwidth=72
 "
 "
-"Plug 'w0rp/ale'
 "Plug 'davidhalter/jedi-vim' "python autocompletion
 " Plug 'rust-lang/rust.vim', {'do': 'cargo install racer -f; rustup component add rls rust-analysis rust-src'}
-" Plug 'racer-rust/vim-racer'
 Plug 'qnighy/lalrpop.vim'
 
 Plug 'mbbill/undotree'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+Plug 'nvim-treesitter/nvim-treesitter-refactor'
+Plug 'nvim-treesitter/nvim-treesitter-context'
+
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Plug 'integralist/vim-mypy'
-" auto-close plugin
-" Plug 'rstacruz/vim-closer'
+Plug 'rstacruz/vim-closer'
 Plug 'machakann/vim-sandwich'
 
-"Plug 'Shougo/denite.nvim'
 " Print function signatures in echo area
 Plug 'Shougo/echodoc.vim'
 
 " Icons
 Plug 'ryanoasis/vim-devicons'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 Plug 'jeetsukumaran/vim-buffergator'
-Plug 'wellle/targets.vim'
 
 
 
@@ -114,6 +127,14 @@ nmap ]g <Plug>(coc-git-nextchunk)
 nmap gs <Plug>(coc-git-chunkinfo)
 " show commit ad current position
 nmap gC <Plug>(coc-git-commit)
+" Find merge conflicts
+nnoremap <leader>gmc /\v^[<=>\|]{7}.*$<CR>
+"git diff
+nnoremap <leader>gd :Gdiff<CR>
+nnoremap git :Git<Space>
+nnoremap <leader>gs :Gministatus<CR>:wincmd K<CR>
+nnoremap <leader>gc :Git commit<CR>:set spell<CR><C-W>Ki
+nnoremap <leader>ff :Rg<Space>
 
 " Remap for rename current word
 nmap <leader>rn <Plug>(coc-rename)
@@ -166,15 +187,13 @@ function! s:show_documentation()
   endif
 endfunction
 autocmd CursorHold * silent call CocActionAsync('highlight')                   " Highlight symbol under cursor on CursorHold
-augroup mygroup
-  autocmd!
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected') " Setup formatexpr specified filetype(s).
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')     " Update signature help on jump placeholder
-augroup end
+" augroup mygroup
+  " autocmd!
+  " autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected') " Setup formatexpr specified filetype(s).
+  " autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')     " Update signature help on jump placeholder
+" augroup end
 command! -nargs=0 Format :call CocAction('format')                             " Use `:Format` for format current buffer
 command! -nargs=? Fold :call     CocAction('fold', <f-args>)                   " Use `:Fold` for fold current buffer
-
-Plug 'terryma/vim-multiple-cursors'
 
 
 Plug 'pseewald/vim-anyfold'
@@ -215,7 +234,10 @@ Plug 'tpope/vim-eunuch'
 Plug 'HerringtonDarkholme/yats.vim'
 
 Plug 'airblade/vim-gitgutter'
-Plug 'ap/vim-css-color'
+" Plug 'ap/vim-css-color'
+Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
+let g:Hexokinase_highlighters = ['backgroundfull']
+Plug 'chrisbra/colorizer'
 "Plug 'roxma/vim-paste-easy'
 
 Plug 'leafgarland/typescript-vim', { 'for': 'typescript' }
@@ -232,6 +254,8 @@ Plug 'tweekmonster/impsort.vim'
 " Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
 Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/seoul256.vim'
+Plug 'ellisonleao/gruvbox.nvim'
+Plug 'joshdick/onedark.vim'
 Plug 'roryokane/detectindent'
 Plug 'terryma/vim-multiple-cursors'
 
@@ -247,6 +271,7 @@ Plug 'https://github.com/junegunn/vim-github-dashboard.git'
 
 " On-demand loading
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+let g:NERDTreeShowHidden = 1
 Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
 Plug 'Xuyuanp/nerdtree-git-plugin'
 nmap <Leader>r :NERDTreeFocus<cr>R<c-w><c-p>
@@ -255,7 +280,8 @@ nmap <Leader>r :NERDTreeFocus<cr>R<c-w><c-p>
 "Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
 
 " Using a tagged release; wildcard allowed (requires git 1.9.2 or above)
-Plug 'fatih/vim-go', { 'tag': '*' }
+" Plug 'fatih/vim-go'
+let g:go_def_mapping_enabled = 0
 
 " Plugin outside ~/.vim/plugged with post-update hook
 Plug 'junegunn/fzf.vim'
@@ -278,9 +304,21 @@ let g:fzf_colors =
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
 
-"Plug 'ryanoasis/vim-devicons'
-"Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 call plug#end()
+
+" lua <<EOF
+" require 'nvim-treesitter.configs'.setup {
+  " ensure_installed = "maintained", -- "all", "maintained", or list of languages
+  " highlight = {
+    " enable = true,  -- false will disable the whole extension
+    " disable = {},   -- list of languages that will be disabled
+  " },
+  " refactor = {
+    " highlight_definitions = { enable = true },
+    " highlight_current_scope = { enable = false },
+  " },
+" }
+" EOF
 
 filetype plugin indent on
 syntax enable
@@ -288,10 +326,12 @@ syntax on
 
 "autocmd Filetype * AnyFoldActivate
 
+set termguicolors 
 set incsearch
 set hlsearch " highlight search results
 set cindent
 set textwidth=120
+" set colorcolumn=100
 
 set hidden
 set backspace=indent,eol,start " make backspace behave in a sane manner
@@ -390,12 +430,14 @@ map <leader>h :noh<CR>
 
 
 nnoremap <silent> <Leader>v :NERDTreeFind<CR>
+let g:NERDTreeDirArrowExpandable = '▸'
+let g:NERDTreeDirArrowCollapsible = '▾'
 let NERDTreeQuitOnOpen = 1
 let NERDTreeAutoDeleteBuffer = 1
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 let NERDTreeShowHidden=1
-let g:airline_theme = 'violet'
+" let g:airline_theme = 'violet'
 " Support virtualenv
 let g:pymode_virtualenv = 1
 " enable 24 bit color support if supported
@@ -408,8 +450,8 @@ if (has("termguicolors"))
 endif
 
 " turn hybrid line numbers on
-:set number relativenumber
-:set nu rnu
+" :set number relativenumber
+" :set nu rnu
 
 "if executable('rls')
     "au User lsp_setup call lsp#register_server({
@@ -442,30 +484,43 @@ endif
     set showmatch " show matching braces
     set mat=2 " how many tenths of a second to blink
 
-    " code folding settings
+    " " code folding settings
     set encoding=utf8
-    let g:airline_powerline_fonts = 1
+    " " let g:airline_powerline_fonts = 1
 
 " }}}
-    let g:NERDTreeDirArrowExpandable = '▸'
-    let g:NERDTreeDirArrowCollapsible = '▾'
 
 autocmd Filetype * AnyFoldActivate  
 set foldlevel=99
 
 let g:autofmt_autosave = 1
 let g:seoul256_background = 233
-colo seoul256
+set background=dark
+" colo seoul256
+colo gruvbox
+
+" if (has("autocmd") && !has("gui_running"))
+  " augroup colors
+    " autocmd!
+    " let s:background = { "gui": "#161616", "cterm": "255", "cterm16": "0" }
+    " autocmd ColorScheme * call onedark#set_highlight("Normal", { "bg": s:background }) "No `fg` setting
+  " augroup END
+" endif
+" set background=dark
+
 
 " ESC shortcuts for insert mode
-"inoremap jj <Esc>
-inoremap jk <Esc>
-inoremap kj <Esc>
-
+" inoremap jj <Esc>
+" inoremap jk <Esc>
+" inoremap kj <Esc>
 noremap zxc :w<CR>
 noremap qwe :wq<CR>
 noremap fff :set foldlevel=0<CR>
 noremap ffo :set foldlevel=99<CR>
+
+" Run q macro
+nmap <silent> <leader>q @q
+vmap <silent> <leader>q :norm! @q<CR>
 "noremap <silent> <C-[> :set foldlevel=0<CR>
 "noremap <silent> <C-]> :set foldlevel=99<CR>
 
@@ -546,6 +601,54 @@ catch
   echo 'Denite not installed. It should work after running :PlugInstall'
 endtry
 
+							" *coc-completion-example*
+
+" Note: use command `:verbose imap` to check current insert
+" key-mappings when your key-mappings not work.
+
+" Use <tab> and <S-tab> to navigate completion list: >
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+" Insert <tab> when previous text is space, refresh completion if not.
+inoremap <silent><expr> <TAB>
+\ coc#pum#visible() ? coc#pum#next(1):
+\ <SID>check_back_space() ? "\<Tab>" :
+\ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+" Use <CR> to confirm completion, use: >
+inoremap <expr> <cr> coc#pum#visible() ? coc#_select_confirm() : "\<CR>"
+" <
+" To make <CR> to confirm selection of selected complete item or notify coc.nvim
+" to format on enter, use: >
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#_select_confirm()
+      \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" " Map <tab> for trigger completion, completion confirm, snippet expand and jump
+" " like VSCode: >
+
+" inoremap <silent><expr> <TAB>
+  " \ coc#pum#visible() ? coc#_select_confirm() :
+  " \ coc#expandableOrJumpable() ?
+  " \ "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+  " \ <SID>check_back_space() ? "\<TAB>" :
+  " \ coc#refresh()
+
+" function! s:check_back_space() abort
+  " let col = col('.') - 1
+  " return !col || getline('.')[col - 1]  =~# '\s'
+" endfunction
+
+" let g:coc_snippet_next = '<tab>'
+" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" <
+" Note: the `coc-snippets` extension is required for this to work.
+
 " === Coc.nvim === "
 " use <tab> for trigger completion and navigate to next complete item
 let g:coc_global_extensions = [
@@ -560,12 +663,11 @@ let g:coc_global_extensions = [
   \ 'coc-tsserver',
   \ 'coc-yaml',
   \ 'coc-vimlsp',
-  \ 'coc-go',
   \ 'coc-gitignore',
   \ 'coc-python',
   \ 'coc-yaml',
   \ 'coc-sql',
-  \ 'coc-styled-components',
+  \ 'coc-styled-components'
   \ ]
 
 function! s:isPreviewWindowOpen()
@@ -611,71 +713,68 @@ function! s:check_back_space() abort
 endfunction
 
 
-let g:NERDTreeShowHidden = 1
 
-let g:NERDTreeIgnore = ['^\.DS_Store$', '^tags$', '\.git$[[dir]]', '\.idea$[[dir]]', '\.sass-cache$']
+" " try
 
-try
+" " === Vim airline ==== "
+" " Enable extensions
+" let g:airline_extensions = ['branch', 'hunks', 'coc']
 
-" === Vim airline ==== "
-" Enable extensions
-let g:airline_extensions = ['branch', 'hunks', 'coc']
+" " Update section z to just have line number
+" let g:airline_section_z = airline#section#create(['linenr'])
 
-" Update section z to just have line number
-let g:airline_section_z = airline#section#create(['linenr'])
+" " Do not draw separators for empty sections (only for the active window) >
+" let g:airline_skip_empty_sections = 1
 
-" Do not draw separators for empty sections (only for the active window) >
-let g:airline_skip_empty_sections = 1
+" " Smartly uniquify buffers names with similar filename, suppressing common parts of paths.
+" let g:airline#extensions#tabline#formatter = 'unique_tail'
 
-" Smartly uniquify buffers names with similar filename, suppressing common parts of paths.
-let g:airline#extensions#tabline#formatter = 'unique_tail'
+" " Custom setup that removes filetype/whitespace from default vim airline bar
+" let g:airline#extensions#default#layout = [['a', 'b', 'c'], ['x', 'z', 'warning', 'error']]
 
-" Custom setup that removes filetype/whitespace from default vim airline bar
-let g:airline#extensions#default#layout = [['a', 'b', 'c'], ['x', 'z', 'warning', 'error']]
+" let airline#extensions#coc#stl_format_err = '%E{[%e(#%fe)]}'
 
-let airline#extensions#coc#stl_format_err = '%E{[%e(#%fe)]}'
+" let airline#extensions#coc#stl_format_warn = '%W{[%w(#%fw)]}'
 
-let airline#extensions#coc#stl_format_warn = '%W{[%w(#%fw)]}'
+" " Configure error/warning section to use coc.nvim
+" let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
+" let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
 
-" Configure error/warning section to use coc.nvim
-let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
-let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
+" " Hide the Nerdtree status line to avoid clutter
+" let g:NERDTreeStatusline = ''
 
-" Hide the Nerdtree status line to avoid clutter
-let g:NERDTreeStatusline = ''
+" " Disable vim-airline in preview mode
+" let g:airline_exclude_preview = 1
 
-" Disable vim-airline in preview mode
-let g:airline_exclude_preview = 1
+" " Enable powerline fonts
+" let g:airline_powerline_fonts = 1
 
-" Enable powerline fonts
-let g:airline_powerline_fonts = 1
+" " Enable caching of syntax highlighting groups
+" let g:airline_highlighting_cache = 1
 
-" Enable caching of syntax highlighting groups
-let g:airline_highlighting_cache = 1
+" " Define custom airline symbols
+" if !exists('g:airline_symbols')
+  " let g:airline_symbols = {}
+" endif
 
-" Define custom airline symbols
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
+" " unicode symbols
+" let g:airline_left_sep = '❮'
+" let g:airline_right_sep = '❯'
+" "" Don't show git changes to current file in airline
+" "let g:airline#extensions#hunks#enabled=0
 
-" unicode symbols
-let g:airline_left_sep = '❮'
-let g:airline_right_sep = '❯'
-"" Don't show git changes to current file in airline
-"let g:airline#extensions#hunks#enabled=0
-
-catch
-  echo 'Airline not installed. It should work after running :PlugInstall'
-endtry
+" catch
+  " echo 'Airline not installed. It should work after running :PlugInstall'
+" endtry
 
 
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+" inoremap <silent><expr> <TAB>
+      " \ pumvisible() ? "\<C-n>" :
+      " \ <SID>check_back_space() ? "\<TAB>" :
+      " \ coc#refresh()
+" inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 " function! s:check_back_space() abort
   " let col = col('.') - 1
   " return !col || getline('.')[col - 1]  =~# '\s'
@@ -695,6 +794,7 @@ inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 "
 set conceallevel=0
 
+
 call smartinput#define_rule({
 \   'at': '<\s*\(''\s*[a-z]\s*,\s*\)*\%#',
 \   'char': '''',
@@ -711,6 +811,6 @@ call smartinput#define_rule({
 \   'filetype': ['rust'],
 \ })
 
-call smartinput#map_to_trigger('i', '<Plug>SmartinputCR', '<Enter>', '<CR>')
-imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<Plug>SmartinputCR"
+" call smartinput#map_to_trigger('i', '<Plug>SmartinputCR', '<Enter>', '<CR>')
+" imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<Plug>SmartinputCR"
 map <Space> <Leader>
